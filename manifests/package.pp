@@ -48,6 +48,9 @@ class dropbox::package {
     package { 'nodejs':
       ensure => installed
     }
+    package { 'curl':
+      ensure => installed
+    }
 
     file { 'authorize.js':
       path      => "${dropbox::config::dx_home}/authorize.js",
@@ -59,7 +62,8 @@ class dropbox::package {
     exec { 'kill dropbox':
       command => 'service dropbox stop',
       unless  => "test -f ${dropbox::config::dx_home}/.dropbox/sigstore.dbx",
-      before  => Exec['authorize-dropbox-user']
+      before  => Exec['authorize-dropbox-user'],
+      require => [Exec['install-dropbox'], File['/etc/init.d/dropbox']],
     }
 
     exec { 'authorize-dropbox-user':
