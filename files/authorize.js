@@ -71,16 +71,19 @@ try {
 			// dropbox says the client is linked before it has written the
 			// sigstore.dbx file so we need to wait a bit.
 			var filePath = process.env.HOME + '/.dropbox/sigstore.dbx';
-			fs.exists(filePath, function (exists) {
-				if (exists) {
-					dropboxdProcess.kill();
-				}
-				else {
-					setTimeout(function() {
+
+			setTimeout(function() {
+				fs.exists(filePath, function (exists) {
+					if (exists) {
 						dropboxdProcess.kill();
-					}, 5000);
-				}
-			});
+					}
+					else {
+						setTimeout(function() {
+							dropboxdProcess.kill();
+						}, 10000);
+					}
+				});
+			}, 1000);
 		}
 	});
 } catch (e) {
