@@ -8,6 +8,7 @@
 
 var spawn = require('child_process').spawn
   , exec = require('child_process').exec
+  , fs = require('fs')
   , dropboxdProcess
   , hostId;
 
@@ -69,9 +70,17 @@ try {
 			console.log('All done.  Killing dropbox process.');
 			// dropbox says the client is linked before it has written the
 			// sigstore.dbx file so we need to wait a bit.
-			setTimeout(function() {
-				dropboxdProcess.kill();
-			}, 1000);
+			var filePath = process.env.HOME + '/.dropbox/sigstore.dbx';
+			fs.exists(filePath, function (exists) {
+				if (exists) {
+					dropboxdProcess.kill();
+				}
+				else {
+					setTimeout(function() {
+						dropboxdProcess.kill();
+					}, 5000);
+				}
+			});
 		}
 	});
 } catch (e) {
