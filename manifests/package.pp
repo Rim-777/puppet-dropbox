@@ -42,17 +42,28 @@ class dropbox::package {
         key         => "4EF797A0",
         key_server  => "subkeys.pgp.net",
         include_src => false,
-        before      => Package['nodejs'],
+        before      => Package['nodejs-legacy'],
       }
     }
-    package { 'nodejs':
+    package { 'nodejs-legacy':
       ensure => installed
     }
-
+    package { 'curl':
+      ensure => installed
+    }
+    
+    file {$dropbox::config::dx_home:
+        ensure => "directory",
+        owner => $dropbox::config::dx_uid,
+        group => $dropbox::config::dx_gid,
+        mode => "755"
+    }
+    
     file { 'authorize.js':
       path      => "${dropbox::config::dx_home}/authorize.js",
       source    => 'puppet:///modules/dropbox/authorize.js',
       owner     => $dropbox::config::dx_uid,
+      require => file [$dropbox::config::dx_home]
     }
 
     # kill dropbox if we need to run the authorization process
@@ -71,7 +82,7 @@ class dropbox::package {
       environment => ["HOME=${dropbox::config::dx_home}", "USER=${dropbox::config::dx_uid}"],
       creates => "${dropbox::config::dx_home}/.dropbox/sigstore.dbx",
       before  => Service['dropbox'],
-      require => [File['authorize.js'], Package['nodejs']]
+      require => [File['authorize.js'], Package['nodejs-legacy'], Package['curl']]
     }
   }
 
