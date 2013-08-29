@@ -45,11 +45,15 @@ class dropbox::package {
         before      => Package['nodejs-legacy'],
       }
     }
-    package { 'nodejs-legacy':
-      ensure => installed
+    if ! defined(Package['nodejs-legacy']) {
+      package { 'nodejs-legacy':
+        ensure => installed
+      }
     }
-    package { 'curl':
-      ensure => installed
+    if ! defined(Package['curl']) {
+      package { 'curl':
+        ensure => installed
+      }
     }
     
     file {$dropbox::config::dx_home:
