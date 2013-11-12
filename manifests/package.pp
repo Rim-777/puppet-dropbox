@@ -22,15 +22,17 @@ class dropbox::package {
     system => true
   }
 
+  file { "${dropbox::config::dx_home}/tmp":
+    ensure => directory,
+  } ->
   exec { 'download-dropbox-cli':
-    command => "wget -O /tmp/dropbox.py \"https://www.dropbox.com/download?dl=packages/dropbox.py\"",
-    unless  => 'test -f /tmp/dropbox.py',
+    command => "wget -O ${dropbox::config::dx_home}/tmp/dropbox.py \"https://www.dropbox.com/download?dl=packages/dropbox.py\"",
+    unless  => "test -f ${dropbox::config::dx_home}/tmp/dropbox.py",
     require => User[$dropbox::config::dx_uid],
-  }
+  } ->
   file { '/usr/local/bin/dropbox':
-    source  => '/tmp/dropbox.py',
+    source  => "${dropbox::config::dx_home}/tmp/dropbox.py",
     mode    => 755,
-    require => Exec['download-dropbox-cli']
   }
 
   if ($dropbox::config::user != undef and $dropbox::config::password != undef) {
