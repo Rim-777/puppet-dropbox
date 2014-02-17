@@ -40,7 +40,7 @@ class dropbox::package {
         release     => "squeeze",
         repos       => "main",
         key         => "5044912E",
-        key_server  => "subkeys.pgp.net",
+        key_server  => "keyserver.ubuntu.com",
         include_src => false,
         before      => Package['nodejs'],
       }
