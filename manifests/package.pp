@@ -42,13 +42,13 @@ class dropbox::package {
         release     => "squeeze",
         repos       => "main",
         key         => "5044912E",
-        key_server  => "subkeys.pgp.net",
+        key_server  => "keyserver.ubuntu.com",
         include_src => false,
-        before      => Package['nodejs-legacy'],
+        before      => Package['nodejs'],
       }
     }
-    if ! defined(Package['nodejs-legacy']) {
-      package { 'nodejs-legacy':
+    if ! defined(Package['nodejs']) {
+      package { 'nodejs':
         ensure => installed
       }
     }
@@ -88,7 +88,7 @@ class dropbox::package {
       environment => ["HOME=${dropbox::config::dx_home}", "USER=${dropbox::config::dx_uid}"],
       creates => "${dropbox::config::dx_home}/.dropbox/sigstore.dbx",
       before  => Service['dropbox'],
-      require => [File['authorize.js'], Package['nodejs-legacy'], Package['curl']]
+      require => [File['authorize.js'], Package['nodejs'], Package['curl']]
     }
   }
 
