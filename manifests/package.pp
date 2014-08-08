@@ -34,10 +34,11 @@ class dropbox::package {
   }
 
   if ($dropbox::config::user != undef and $dropbox::config::password != undef) {
-    if $::lsbdistcodename == 'squeeze' {
-      apt::source { "dropbox-squeeze":
+
+    if $::operatingsystem == 'Debian' {
+      apt::source { 'dropbox':
         location    => "http://linux.dropbox.com/debian/",
-        release     => "squeeze",
+        release     => $::lsbdistcodename,
         repos       => "main",
         key         => "5044912E",
         key_server  => "keyserver.ubuntu.com",
