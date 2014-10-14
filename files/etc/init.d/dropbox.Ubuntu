@@ -15,7 +15,7 @@
 
 DROPBOX_USERS="dropbox"
 
-DAEMON=.dropbox-dist/dropbox
+DAEMON=.dropbox-dist/dropboxd
 
 # dropbox shouldn't try to connect to X server
 unset DISPLAY
