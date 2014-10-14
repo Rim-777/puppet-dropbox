@@ -24,7 +24,7 @@ start() {
     echo "Starting dropbox..."
     for dbuser in $DROPBOX_USERS; do
         HOMEDIR=`getent passwd $dbuser | cut -d: -f6`
-        if [ ! -f $HOMEDIR/.dropbox/sigstore.dbx ]; then
+        if [ ! -f $HOMEDIR/.dropbox/info.json ]; then
             echo "$dbuser is not linked to a dropbox account yet.  Cannot start dropbox."
             continue
         fi
