@@ -39,7 +39,7 @@ stop() {
     for dbuser in $DROPBOX_USERS; do
         HOMEDIR=`getent passwd $dbuser | cut -d: -f6`
         if [ -x $HOMEDIR/$DAEMON ]; then
-            start-stop-daemon -o -c $dbuser -K -u $dbuser -x $HOMEDIR/$DAEMON
+            start-stop-daemon -o -c $dbuser -K -u $dbuser -x `/bin/ls -1 $HOMEDIR/.dropbox-dist/dropbox-lnx.*/dropbox`
         fi
     done
 }
