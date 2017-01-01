@@ -32,7 +32,7 @@ class dropbox::package {
   } ->
   file { '/usr/local/bin/dropbox':
     source  => "${dropbox::config::dx_home}/tmp/dropbox.py",
-    mode    => 755,
+    mode    => '755',
   }
 
   if ($dropbox::config::user != undef and $dropbox::config::password != undef) {
@@ -110,8 +110,8 @@ class dropbox::package {
 
   file { '/etc/init.d/dropbox':
     source => "puppet:///modules/dropbox/etc/init.d/dropbox.${::operatingsystem}",
-    owner  => root,
-    group  => root,
-    mode   => 755,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '755',
   }
 }
