@@ -70,7 +70,7 @@ class dropbox::package {
       path      => "${dropbox::config::dx_home}/authorize.js",
       source    => 'puppet:///modules/dropbox/authorize.js',
       owner     => $dropbox::config::dx_uid,
-      require => file [$dropbox::config::dx_home]
+      require => file[$dropbox::config::dx_home]
     }
 
     # kill dropbox if we need to run the authorization process
